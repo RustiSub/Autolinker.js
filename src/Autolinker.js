@@ -59,6 +59,7 @@ var Autolinker = {
 		    matcherRegex = Autolinker.matcherRegex,   // out-of-scope calls
 		    newWindow = ( 'newWindow' in options ) ? options.newWindow : true,  // defaults to true
 		    stripPrefix = ( 'stripPrefix' in options ) ? options.stripPrefix : true,  // defaults to true
+        processCallback = ( 'processCallback' in options ) ? options.processCallback : false, // defaults to false
 		    truncate = options.truncate,
 		    currentResult, 
 		    lastIndex = 0,
@@ -135,7 +136,11 @@ var Autolinker = {
 				if( truncate && anchorText.length > truncate ) {
 					anchorText = anchorText.substring( 0, truncate - 2 ) + '..';
 				}
-				
+
+        if( processCallback ) {
+          anchorAttributes = processCallback(anchorAttributes);
+        }
+
 				return prefixStr + '<a ' + anchorAttributes.join( " " ) + '>' + anchorText + '</a>' + suffixStr;  // wrap the match in an anchor tag
 			} );
 			
